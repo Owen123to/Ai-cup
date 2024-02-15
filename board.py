@@ -4,16 +4,36 @@ from matplotlib.colors import LinearSegmentedColormap
 import random
 # import time
 
-
-player_board = np.zeros((19, 19))
-opponent_board = np.zeros((19, 19))
-last_board = np.zeros((19, 19, 8))
+# 宣告變數
+player_board = 0
+oppnent_board = 1
+player_air_1 = 2
+player_air_2 = 3
+player_air_3 = 4
+player_air_4 = 5
+oppnent_air_1 = 6
+oppnent_air_2 = 7
+oppnent_air_3 = 8
+oppnent_air_4 = 9
+empty_board = 10
+last_1 = 11
+last_8 = 18
+x = np.zeros((19, 19, 19))
+x[:, :, empty_board] = 1
 
 # 計算陣列裡的實際位置
 def trans_pos(num_x, num_y):
     return 19 - num_y, num_x - 1
 
-
+# print棋盤陣列
+def print_board(s, e):
+    for i in range(s, e):
+        print(f'board {i}')
+        for j in range(0, 19):
+            for k in range(0, 19):
+                print(int(x[j][k][i]), end = " ")
+            print()
+        print()
 
 # main
 # 創建一個21x21的棋盤，並將所有的值設為0.5
@@ -74,7 +94,7 @@ def onclick(event):
         print(f'x = {nearest_x}, y = {nearest_y}')
         positions.append((nearest_x, nearest_y))
         nearest_x, nearest_y = trans_pos(nearest_x, nearest_y)
-        player_board[nearest_x][nearest_y] = 1
+        x[nearest_x][nearest_y][player_board] = 1
 
 
         plt.pause(1)
@@ -89,12 +109,12 @@ def onclick(event):
                 print(f'x = {random_x}, y = {random_y}')
                 positions.append((random_x, random_y))
                 random_x, random_y = trans_pos(random_x, random_y)
-                opponent_board[random_x][random_y] = 1
+                x[random_x][random_y][oppnent_board] = 1
 
         print("player")
-        print(player_board)
+        print_board(player_board, player_board + 1)
         print("opponent")
-        print(opponent_board)
+        print_board(oppnent_board, oppnent_board + 1)
         # 交換棋子的顏色
         # color[0] = 'white' if color[0] == 'black' else 'black'
 
