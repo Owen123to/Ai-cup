@@ -35,7 +35,13 @@ def print_board(s, e):
             print()
         print()
 
-# main
+# 設定最後8步
+def set_last(pos_x, pos_y):
+    for i in range(last_8, last_1, -1):
+        x[:, :, i] = x[:, :, i - 1]
+    x[:, :, last_1] = 0
+    x[pos_x, pos_y, last_1] = 1
+
 # 創建一個21x21的棋盤，並將所有的值設為0.5
 board = np.full((21, 21), 0.5)
 # 創建一個咖啡色的色彩映射
@@ -95,7 +101,7 @@ def onclick(event):
         positions.append((nearest_x, nearest_y))
         nearest_x, nearest_y = trans_pos(nearest_x, nearest_y)
         x[nearest_x][nearest_y][player_board] = 1
-
+        set_last(nearest_x, nearest_y)
 
         plt.pause(1)
 
@@ -110,11 +116,13 @@ def onclick(event):
                 positions.append((random_x, random_y))
                 random_x, random_y = trans_pos(random_x, random_y)
                 x[random_x][random_y][oppnent_board] = 1
+                set_last(random_x, random_y)
 
-        print("player")
-        print_board(player_board, player_board + 1)
-        print("opponent")
-        print_board(oppnent_board, oppnent_board + 1)
+        print_board(last_1, last_8 + 1)
+        # print("player")
+        # print_board(player_board, player_board + 1)
+        # print("opponent")
+        # print_board(oppnent_board, oppnent_board + 1)
         # 交換棋子的顏色
         # color[0] = 'white' if color[0] == 'black' else 'black'
 
